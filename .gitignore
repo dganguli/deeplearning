@@ -1,3 +1,4 @@
 .idea/
 data/
 deeplearning/*.pyc
+notebooks/.ipynb_checkpoints/
