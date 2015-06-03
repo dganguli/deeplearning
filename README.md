@@ -9,6 +9,7 @@ Here we have a t-SNE visualization of the outputs of the hidden units of a multi
 
 ![](https://raw.githubusercontent.com/dganguli/deeplearning/master/notebooks/tsne_out.png)
 
+The notebook that generates this graph, using code in this repo, is [here](https://github.com/dganguli/deeplearning/blob/master/notebooks/Multi%20Layer%20Perceptron%20Examples.ipynb)
 
 # Resources
 [CS231n: Convolutional Neural Networks for Visual Recognition](http://cs231n.stanford.edu/)
