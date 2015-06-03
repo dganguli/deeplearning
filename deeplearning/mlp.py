@@ -32,14 +32,14 @@ class MultiLayerPerceptron(object):
             ind = ind + 1
         return T
 
-    def hidden_layer(self):
-        return self.hidden_activation_fn(np.dot(self.inputs, self.W1.T))
+    def hidden_layer(self, X):
+        return self.hidden_activation_fn(np.dot(X, self.W1.T))
 
     def output_layer(self, Y):
         return self.softmax(np.dot(Y, self.W2.T))
 
-    def forward_pass(self):
-        Z = self.output_layer(self.hidden_layer())
+    def forward_pass(self, X):
+        Z = self.output_layer(self.hidden_layer(X))
         return Z
 
     @staticmethod
@@ -58,11 +58,11 @@ class MultiLayerPerceptron(object):
         return loss
 
     def compute_gradients(self):
-        Y = self.hidden_layer()
+        Y = self.hidden_layer(self.inputs)
         Z = self.output_layer(Y)
 
         dloss = Z - self.T
-        dloss/=self.num_inputs
+        dloss /= self.num_inputs
         dW2 = np.dot(dloss.T, Y)
         dhidden = np.dot(dloss, self.W2)
         dhidden[Y <= 0] = 0
@@ -75,7 +75,7 @@ class MultiLayerPerceptron(object):
         n_iter = 0
 
         while (n_iter < max_iter):
-            prob = self.forward_pass()
+            prob = self.forward_pass(self.inputs)
             loss = self.cross_entropy_loss(prob)
             dW1, dW2 = self.compute_gradients()
             self.W1 -= learning_rate * dW1
@@ -83,4 +83,9 @@ class MultiLayerPerceptron(object):
 
             if n_iter % iter_print == 0:
                 print "iteration {}: loss: {}".format(n_iter, loss)
-            n_iter+= 1
+            n_iter += 1
+
+    def predict(self, X):
+        scores = self.forward_pass(X)
+        y_hat = np.argmax(scores, axis=1)
+        return y_hat, scores
