@@ -1,8 +1,36 @@
 import os
 import cPickle
 import gzip
+from pylab import plt
+import numpy as np
 
-def load_mnist(path, filename='mnist.pkl.gz'):
+def load_spirals(N, plot=True):
+    """
+    Loads a 3 - class non-linearly seperable data set consisting of 'spirals'
+    Code is adapted from the Spring 2015 Stanford cs231 course: 'Convolutional
+    Neural Networks for Visual Recognition'. Link: http://cs231n.github.io/neural-networks-case-study/
+    :param N: (int) Number of data points per class
+    :param plot: (bool) Plot resulting 2-D dataset
+    :return: (X, y) X is a NX2 matrix of inputs, y is an NX1 vector of class labels
+    """
+    D = 2 # dimensionality
+    K = 3 # number of classes
+    X = np.zeros((N*K,D)) # data matrix (each row = single example)
+    y = np.zeros(N*K, dtype='uint8') # class labels
+
+    for j in xrange(K):
+      ix = range(N*j,N*(j+1))
+      r = np.linspace(0.0,1,N) # radius
+      t = np.linspace(j*4,(j+1)*4,N) + np.random.randn(N)*0.2 # theta
+      X[ix] = np.c_[r*np.sin(t), r*np.cos(t)]
+      y[ix] = j
+
+    if plot:
+        plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.Spectral)
+
+    return X, y
+
+def load_mnist(path, filename='mnist.pkl.gz', plot=True):
     """
     Loads the MNIST dataset. Downloads the data if it doesn't already exist.
     This code is adapted from the deeplearning.net tutorial on classifying
