@@ -9,6 +9,7 @@ setup(
         'deeplearning'
     ],
     description='Methods for exploring and understanding neural networks and deep learning',
-    install_requires=['numpy']
+    install_requires=['numpy',
+                      'matplotlib']
 )
 
