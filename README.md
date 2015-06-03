@@ -5,6 +5,11 @@ I want to understand the theoretical properties of (deep) neural networks, and h
 # Examples
 Examples for how to use the code can be found in the notebooks folder, in the form of ipython notebooks.
 
+Here we have a t-SNE visualization of the outputs of the hidden units of a multilayer perceptron trained on the MNIST handwritten digits dataset:
+
+![](https://raw.githubusercontent.com/dganguli/deeplearning/master/notebooks/tsne_out.png)
+
+
 # Resources
 [CS231n: Convolutional Neural Networks for Visual Recognition](http://cs231n.stanford.edu/)
 
