@@ -57,7 +57,7 @@ class MultiLayerPerceptron(object):
         loss = np.sum(corect_logprobs) / self.num_inputs
         return loss
 
-    def compute_gradients(self):
+    def compute_gradients(self, reg):
         Y = self.hidden_layer(self.inputs)
         Z = self.output_layer(Y)
 
@@ -68,16 +68,21 @@ class MultiLayerPerceptron(object):
         dhidden[Y <= 0] = 0
         dW1 = np.dot(dhidden.T, self.inputs)
 
+        dW1 += reg * self.W1
+        dW2 += reg * self.W2
+
         return dW1, dW2
 
-    def fit(self, learning_rate, max_iter, iter_print):
+    def fit(self, learning_rate, reg, max_iter, iter_print):
 
         n_iter = 0
 
         while (n_iter < max_iter):
             prob = self.forward_pass(self.inputs)
-            loss = self.cross_entropy_loss(prob)
-            dW1, dW2 = self.compute_gradients()
+            data_loss = self.cross_entropy_loss(prob)
+            reg_loss = 0.5*reg*np.sum(self.W1*self.W1) + 0.5*reg*np.sum(self.W2*self.W2)
+            loss = data_loss + reg_loss
+            dW1, dW2 = self.compute_gradients(reg)
             self.W1 -= learning_rate * dW1
             self.W2 -= learning_rate * dW2
 
