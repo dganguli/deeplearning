@@ -37,7 +37,7 @@ def load_mnist(path, filename='mnist.pkl.gz', plot=True):
     MNIST data with Logistic Regression: http://deeplearning.net/tutorial/logreg.html#logreg
     :param path: (str) Path to where data lives or should be downloaded too
     :param filename: (str) name of mnist file to download or load
-    :return:
+    :return: train_set, valid_set, test_set
     """
     dataset = '{}/{}'.format(path, filename)
     data_dir, data_file = os.path.split(dataset)
@@ -58,4 +58,14 @@ def load_mnist(path, filename='mnist.pkl.gz', plot=True):
     f = gzip.open(dataset, 'rb')
     train_set, valid_set, test_set = cPickle.load(f)
     f.close()
+
+    X_train = train_set[0]
+    y_train = train_set[1]
+    if plot:
+        for k in range(25):
+            plt.subplot(5,5,k)
+            plt.imshow(np.reshape(X_train[k,:], (28,28)))
+            plt.axis('off')
+            plt.title(y_train[k])
+
     return train_set, valid_set, test_set
