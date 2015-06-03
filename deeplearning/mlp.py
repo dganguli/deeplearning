@@ -27,7 +27,7 @@ class MultiLayerPerceptron(object):
     def dummy_encode(self, labels):
         T = np.zeros((self.num_inputs, np.max(labels) + 1))
         ind = 0
-        for lbl in y:
+        for lbl in labels:
             T[ind, lbl] = 1
             ind = ind + 1
         return T
@@ -61,7 +61,7 @@ class MultiLayerPerceptron(object):
         Y = self.hidden_layer()
         Z = self.output_layer(Y)
 
-        dloss = self.T - Z
+        dloss = Z - self.T
         dloss/=self.num_inputs
         dW2 = np.dot(dloss.T, Y)
         dhidden = np.dot(dloss, self.W2)
@@ -78,8 +78,8 @@ class MultiLayerPerceptron(object):
             prob = self.forward_pass()
             loss = self.cross_entropy_loss(prob)
             dW1, dW2 = self.compute_gradients()
-            self.W1 += learning_rate * dW1
-            self.W2 += learning_rate * dW2
+            self.W1 -= learning_rate * dW1
+            self.W2 -= learning_rate * dW2
 
             if n_iter % iter_print == 0:
                 print "iteration {}: loss: {}".format(n_iter, loss)
