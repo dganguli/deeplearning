@@ -48,12 +48,14 @@ class MultiLayerPerceptron(object):
 
     @staticmethod
     def softmax(X):
+        maxes = np.max(X,axis=1)
+        X = (X.T-maxes).T
         exp_scores = np.exp(X)
         probs = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
         return probs
 
     def cross_entropy_loss(self, probs):
-        corect_logprobs = -np.log(probs[range(self.num_inputs), self.labels])
+        corect_logprobs = -np.log(probs[range(self.num_inputs), self.labels]+1E-6)
         loss = np.sum(corect_logprobs) / self.num_inputs
         return loss
 
